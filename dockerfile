@@ -4,13 +4,13 @@ WORKDIR /app
 # Install system dependencies required for sharp and other native modules
 RUN apk add --no-cache libc6-compat
 # Copy package files first for better layer caching
-COPY package.json yarn.lock ./
+COPY package.json package-lock.json ./
 # Install dependencies
-RUN yarn install --frozen-lockfile
+RUN npm ci
 # Copy source code
 COPY . ./
 # Build the application
-RUN yarn build
+RUN npm run build
 # Stage 2: Production
 FROM node:22-alpine AS runner
 WORKDIR /app
